@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="#669999"
+        app:theme="@style/ToolBar.Theme"
+        app:popupTheme="@style/ToolBar.Theme.Popup"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:layout_below="@+id/toolbar"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:id="@+id/search_rel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/search_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location:"
+                android:paddingRight="5dp"
+                android:textSize="20sp"/>
+            <EditText
+                android:id="@+id/search_etxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/search_txt"
+                android:singleLine="true"/>
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/search_etxt"
+                android:layout_centerHorizontal="true"
+                android:text="Search"
+                android:onClick="search"/>
+
+         </RelativeLayout>
+
+        <ListView
+            android:id="@+id/search_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="5dp"
+            android:layout_below="@+id/search_rel"/>
+
+       </RelativeLayout>
+
+</RelativeLayout>

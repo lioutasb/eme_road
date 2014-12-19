@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SubmitActivity">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="#669999"
+        app:theme="@style/ToolBar.Theme"
+        app:popupTheme="@style/ToolBar.Theme.Popup"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_below="@+id/toolbar">
+
+        <RelativeLayout
+            android:id="@+id/loc_rel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/loc_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location: "
+                android:layout_centerVertical="true"
+                android:textSize="20sp"/>
+
+            <EditText
+                android:id="@+id/loc_etxt"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/loc_txt"
+                android:layout_centerHorizontal="true"
+                android:hint="Ex. Egnatia"
+                android:singleLine="true" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_toRightOf="@+id/loc_etxt"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/map_icon"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/desc_rel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/loc_rel">
+
+            <TextView
+                android:id="@+id/desc_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description(Optional):"
+                android:textSize="20sp"/>
+
+            <EditText
+                android:id="@+id/desc_etxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/desc_txt"
+                android:maxLines="3"
+                android:minLines="3"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/photo_rel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/desc_rel"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/photo_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:text="Photo(Optional):"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"/>
+
+            <ImageView
+                android:id="@+id/img_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toRightOf="@+id/photo_txt"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_action_photo"
+                android:onClick="selectImage"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/photo_rel"
+            android:text="Send"
+            android:onClick="send"/>
+
+        <fragment
+            android:id="@+id/mapView"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_below="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

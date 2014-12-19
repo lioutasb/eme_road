@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".IncidentActivity">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="#669999"
+        app:theme="@style/ToolBar.Theme"
+        app:popupTheme="@style/ToolBar.Theme.Popup"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_below="@+id/toolbar">
+
+        <TextView
+            android:id="@+id/app_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:text="Emergency road is an app for android devices. Emergency road’s goal is to help users avoid traffic and inform them about unavailable roads. This app allows user to submit any incidents that result to block the traffic in a street or in an avenue. Users can also get informed about these incidents and choose a different route to reach their destination."/>
+
+        <TextView
+            android:id="@+id/devs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:layout_below="@+id/app_desc"
+            android:autoLink="email"
+            android:text="Developers:\nAlexakis Stavros - stalexakiss@gmail.com\nLioutas Vasilis - tyroline@gmail.com\nManolis Thanasis - thanmanolis@gmail.com"/>
+
+        <TextView
+            android:id="@+id/app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/devs"
+            android:paddingTop="10dp"/>
+    </RelativeLayout>
+
+</RelativeLayout>
