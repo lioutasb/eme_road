@@ -79,7 +79,7 @@ public class IncidentActivity extends ActionBarActivity {
         else if(id == R.id.action_share){
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
-            String shareBody = "Emergency Road | " + incident.location;
+            String shareBody = "Emergency Road | Incident On " + incident.location + " (" + incident.date + ")";
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Emergency Road | Incident On " + incident.location + " (" + incident.date + ")");
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, "Share This Incident"));
