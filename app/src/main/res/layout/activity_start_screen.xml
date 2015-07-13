@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg1"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/playstore_icon"/>
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Login"
+            android:layout_above="@+id/btnRegister"
+            bootstrap:bb_icon_left="fa-sign-in"
+            bootstrap:bb_roundedCorners="true"
+            bootstrap:bb_type="primary"
+            android:onClick="openLogin"/>
+
+        <com.beardedhen.androidbootstrap.BootstrapButton
+            android:id="@+id/btnRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="Register"
+            android:layout_alignParentBottom="true"
+            bootstrap:bb_icon_left="fa-file-text"
+            bootstrap:bb_roundedCorners="true"
+            bootstrap:bb_type="danger"
+            android:onClick="openRegister"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

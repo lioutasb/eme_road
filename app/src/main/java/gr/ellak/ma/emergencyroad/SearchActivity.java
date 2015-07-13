@@ -19,6 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,12 +73,14 @@ public class SearchActivity extends ActionBarActivity {
 
         @Override
         protected List<Incident> doInBackground(Void... params) {
-            List<NameValuePair> params1 = new ArrayList<NameValuePair>();
-            params1.add(new BasicNameValuePair("location", ((EditText) act.findViewById(R.id.search_etxt)).getText().toString()));
-            JSONObject json = jsonParser.makeHttpRequest("http://titansoft.netau.net/get_incidents.php",
-                    "GET", params1);
+
             List<Incident> list = new ArrayList<>();
             try {
+                List<NameValuePair> params1 = new ArrayList<>();
+                params1.add(new BasicNameValuePair("location", URLEncoder.encode(((EditText) act.findViewById(R.id.search_etxt)).getText().toString(), "UTF-8")));
+                JSONObject json = jsonParser.makeHttpRequest(act, "http://titansoft.netau.net/get_incidents.php",
+                        "GET", params1);
+
                 JSONArray objs = json.getJSONArray("incident");
 
                 for(int i = 0; i < objs.length(); i++){
@@ -87,8 +90,7 @@ public class SearchActivity extends ActionBarActivity {
                     inc.ID = objs.getJSONObject(i).getInt("ID");
                     list.add(inc);
                 }
-                System.out.println("asdad");
-            } catch (JSONException e) {
+            } catch (Exception e) {
 
                 e.printStackTrace();
             }

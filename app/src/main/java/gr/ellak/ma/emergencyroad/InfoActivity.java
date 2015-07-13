@@ -20,7 +20,7 @@ public class InfoActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Application Info");
-        getSupportActionBar().setLogo(getResources().getDrawable(R.drawable.ic_launcher));
+        getSupportActionBar().setLogo(getResources().getDrawable(R.drawable.ic_action_pin));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView version = (TextView) findViewById(R.id.app_version);

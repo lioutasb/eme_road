@@ -1,21 +1,33 @@
 package gr.ellak.ma.emergencyroad;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +46,8 @@ public class IncidentActivity extends ActionBarActivity {
     ImageView upBtn;
     ImageView downBtn;
     Incident incident = new Incident();
+    GoogleMap googleMap;
+    Activity act = this;
 
     @Override
     protected void onCreate(Bundle saved){
@@ -42,7 +56,7 @@ public class IncidentActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Incident " + getIntent().getExtras().getString("title"));
+        getSupportActionBar().setTitle(getIntent().getExtras().getString("title"));
         id = getIntent().getExtras().getInt("id");
         loc= (TextView)findViewById(R.id.loctittle);
         des= (TextView)findViewById(R.id.desc_txt);
@@ -94,7 +108,8 @@ public class IncidentActivity extends ActionBarActivity {
         protected Incident doInBackground(Void... params) {
             List<NameValuePair> params1 = new ArrayList<NameValuePair>();
             params1.add(new BasicNameValuePair("ID", String.valueOf(id)));
-            JSONObject json = jsonParser.makeHttpRequest("http://titansoft.netau.net/get_incident_details.php",
+            params1.add(new BasicNameValuePair("userid", String.valueOf(act.getSharedPreferences("EroadPrefs", 0).getInt("user_id", -1))));
+            JSONObject json = jsonParser.makeHttpRequest(act, "http://titansoft.netau.net/get_incident_details.php",
                     "GET", params1);
             System.out.println(json.toString());
             Incident i= new Incident();
@@ -105,7 +120,22 @@ public class IncidentActivity extends ActionBarActivity {
                 i.description=json.getJSONObject("incident").getString("description");
                 i.up_votes=json.getJSONObject("incident").getInt("up_vote");
                 i.down_votes=json.getJSONObject("incident").getInt("down_vote");
-            } catch (JSONException e) {
+                i.lat = json.getJSONObject("incident").getDouble("latitude");
+                i.longi = json.getJSONObject("incident").getDouble("longitude");
+                i.imgUrl = json.getJSONObject("incident").getString("imgUrl");
+                if(!i.imgUrl.equals("")) {
+                    URL url = new URL(i.imgUrl);
+                    final Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((ImageView) act.findViewById(R.id.imgView)).setImageBitmap(bmp);
+                            act.findViewById(R.id.imgView).setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return i;
@@ -115,11 +145,38 @@ public class IncidentActivity extends ActionBarActivity {
             incident = result;
             loc.setText(result.location);
             date.setText(result.date);
-            des.setText("Description:\n"+result.description);
+            des.setText("Description:\n"+(!result.description.equals("")?result.description:"(No description)"));
             upTxt.setText("+"+result.up_votes);
             downTxt.setText("-"+result.down_votes);
             downBtn.setVisibility(View.VISIBLE);
             upBtn.setVisibility(View.VISIBLE);
+
+            createMapView();
+            LatLng loc = new LatLng(result.lat, result.longi);
+            googleMap.clear();
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(loc);
+            googleMap.addMarker(markerOptions);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 15.5f));
+            googleMap.getUiSettings().setAllGesturesEnabled(false);
+        }
+    }
+
+    private void createMapView(){
+        try {
+            if(null == googleMap){
+                googleMap = ((MapFragment) getFragmentManager().findFragmentById(
+                        R.id.mapView)).getMap();
+
+                googleMap.getUiSettings().setZoomGesturesEnabled(true);
+
+                if(null == googleMap) {
+                    Toast.makeText(getApplicationContext(),
+                            "Error creating map", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } catch (NullPointerException exception){
+            Log.e("mapApp", exception.toString());
         }
     }
 
@@ -138,7 +195,7 @@ public class IncidentActivity extends ActionBarActivity {
             List<NameValuePair> params1 = new ArrayList<NameValuePair>();
             params1.add(new BasicNameValuePair("ID", String.valueOf(id)));
             params1.add(new BasicNameValuePair("option", String.valueOf(params[0])));
-            JSONObject json = jsonParser.makeHttpRequest("http://titansoft.netau.net/update_incident_votes.php",
+            JSONObject json = jsonParser.makeHttpRequest(act, "http://titansoft.netau.net/update_incident_votes.php",
                     "POST", params1);
             System.out.println(json.toString());
             downBtn.setClickable(false);

@@ -16,9 +16,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 public class JSONParser {
@@ -34,7 +38,7 @@ public class JSONParser {
 
     // function get json from url
     // by making HTTP POST or GET mehtod
-    public JSONObject makeHttpRequest(String url, String method,
+    public JSONObject makeHttpRequest(Context con, String url, String method,
                                       List<NameValuePair> params) {
 
         // Making HTTP request
@@ -44,10 +48,9 @@ public class JSONParser {
             if(method.equals("POST")){
                 // request method is POST
                 // defaultHttpClient
-                DefaultHttpClient httpClient = new DefaultHttpClient();
+                DefaultHttpClient httpClient = EmeRoadApplication.getInstance().getHttpClient();
                 HttpPost httpPost = new HttpPost(url);
                 httpPost.setEntity(new UrlEncodedFormEntity(params));
-
 
                 HttpResponse httpResponse = httpClient.execute(httpPost);
                 HttpEntity httpEntity = httpResponse.getEntity();
@@ -55,7 +58,8 @@ public class JSONParser {
 
             }else if(method.equals("GET")){
                 // request method is GET
-                DefaultHttpClient httpClient = new DefaultHttpClient();
+                DefaultHttpClient httpClient = EmeRoadApplication.getInstance().getHttpClient();
+                httpClient.setCookieStore(new PersistentCookieStore(con));
                 String paramString = URLEncodedUtils.format(params, "utf-8");
                 System.out.println(paramString);
                 url += "?" + paramString;
@@ -99,5 +103,11 @@ public class JSONParser {
         // return JSON String
         return jObj;
 
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

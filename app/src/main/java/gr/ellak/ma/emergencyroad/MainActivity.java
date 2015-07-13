@@ -22,7 +22,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setLogo(getResources().getDrawable(R.drawable.ic_launcher));
+        getSupportActionBar().setLogo(getResources().getDrawable(R.drawable.ic_action_pin));
 
         GridView grid = (GridView) findViewById(R.id.gridview);
         grid.setAdapter(new MainGridAdapter(this));
@@ -34,7 +34,10 @@ public class MainActivity extends ActionBarActivity {
                     Intent i = new Intent(act, SubmitActivity.class);
                     act.startActivity(i);
                 }
-                else if(position==1){}
+                else if(position==1){
+                    Intent i = new Intent(act, NearbyIncidentsMapActivity.class);
+                    act.startActivity(i);
+                }
                 else if(position==2){
                     Intent i = new Intent(act, SearchActivity.class);
                     act.startActivity(i);
@@ -60,6 +63,14 @@ public class MainActivity extends ActionBarActivity {
 
         if (id == R.id.action_settings) {
             return true;
+        }
+        else if(id == R.id.action_logout){
+            new PersistentCookieStore(act).clear();
+            Intent i = act.getBaseContext().getPackageManager()
+                    .getLaunchIntentForPackage(act.getBaseContext().getPackageName());
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            act.finish();
+            act.startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);

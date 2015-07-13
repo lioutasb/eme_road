@@ -10,4 +10,8 @@ public class Incident {
     public int up_votes = 0;
     public int down_votes = 0;
     public int ID = 0;
+    public double lat = 250;
+    public double longi = 250;
+    public String imgUrl = "";
+
 }
